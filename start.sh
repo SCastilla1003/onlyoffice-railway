@@ -21,4 +21,4 @@ if [ ! -f /var/www/onlyoffice/Data/certs/onlyoffice.key ]; then
 fi
 
 # Start the original ONLYOFFICE entrypoint
-exec /app/onlyoffice/run-document-server.sh
+exec /app/ds/run-document-server.sh

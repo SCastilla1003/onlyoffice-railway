@@ -11,5 +11,13 @@ if [ ! -f /var/www/onlyoffice/Data/certs/onlyoffice.key ]; then
     echo "SSL certs generated"
 fi
 
-# Start the original ONLYOFFICE entrypoint
-exec /app/ds/run-document-server.sh
+# Run original entrypoint in background
+/app/ds/run-document-server.sh &
+MAIN_PID=$!
+
+# Wait for setup and retry nginx
+sleep 20
+echo "Retrying nginx..."
+nginx -t 2>&1 && service nginx restart 2>&1 || true
+
+wait $MAIN_PID
